@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
@@ -26,7 +25,7 @@
   <hr>
   
   <h2>An Image</h2>
-  <img src="IMG_3492.jpg" alt="my pic" width = 30% height = 30%>
+  <img src="NathanNguyen21.github.io/assets/IMG_3492.jpg" alt="my pic" width = 30% height = 30%>
   <hr>
 
   <h1 style="text-align: center;">About This Website</h1>
