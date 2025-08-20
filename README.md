@@ -1,5 +1,3 @@
-# NathanNguyen21.github.io
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +26,7 @@
   <hr>
   
   <h2>An Image</h2>
-  <img src="H:\snaplytics_converted_gif.gif" alt="Placeholder image" width = 30% height = 30%>
+  <img src="IMG_3492.jpg" alt="my pic" width = 30% height = 30%>
   <hr>
 
   <h1 style="text-align: center;">About This Website</h1>
