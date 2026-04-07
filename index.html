@@ -54,6 +54,30 @@
             background: rgba(71, 85, 105, 0.8); 
             border-radius: 4px;
         }
+
+        /* Mobile specific fixes */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        @media (max-width: 640px) {
+            .os-window {
+                top: 90px !important;
+                left: 16px !important;
+                width: calc(100% - 32px) !important;
+                transform: none !important;
+            }
+            .window-content {
+                max-height: calc(100vh - 160px) !important;
+            }
+            .title-bar {
+                cursor: default !important;
+            }
+        }
     </style>
 </head>
 <body class="min-h-screen w-full relative">
@@ -63,10 +87,10 @@
 
     <!-- Top Navigation Bar (Acts like a Dock/Taskbar) -->
     <header class="fixed top-8 z-[100] w-full flex justify-center px-4 pointer-events-none">
-        <nav class="pointer-events-auto bg-slate-800/80 backdrop-blur-md px-8 py-4 rounded-full shadow-lg shadow-black/20 border border-slate-700 w-full max-w-2xl flex justify-center space-x-6 sm:space-x-12">
-            <a href="#" data-window="window-about" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors active-nav">About Me</a>
-            <a href="#" data-window="window-projects" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors">Projects</a>
-            <a href="#" data-window="window-contact" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors">Contact</a>
+        <nav class="pointer-events-auto bg-slate-800/80 backdrop-blur-md px-5 sm:px-8 py-3 sm:py-4 rounded-full shadow-lg shadow-black/20 border border-slate-700 w-full max-w-2xl flex justify-start sm:justify-center gap-6 sm:space-x-12 overflow-x-auto no-scrollbar">
+            <a href="#" data-window="window-about" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors active-nav whitespace-nowrap shrink-0">About Me</a>
+            <a href="#" data-window="window-projects" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors whitespace-nowrap shrink-0">Projects</a>
+            <a href="#" data-window="window-contact" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors whitespace-nowrap shrink-0">Contact</a>
         </nav>
     </header>
 
@@ -86,8 +110,8 @@
             </div>
             
             <!-- Window Content -->
-            <div class="window-content p-8 max-h-[65vh] overflow-y-auto">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="window-content p-5 sm:p-8 max-h-[65vh] overflow-y-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 items-center">
                     <!-- Left: Text Content -->
                     <div class="space-y-6 text-left">
                         <div class="inline-block px-3 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-xs font-semibold tracking-wide uppercase">
@@ -133,7 +157,7 @@
                 </div>
                 <div class="mx-auto text-xs text-slate-400 font-medium tracking-wide">Projects — /home/guest/projects</div>
             </div>
-            <div class="window-content p-6 sm:p-8 max-h-[60vh] overflow-y-auto space-y-6">
+            <div class="window-content p-5 sm:p-8 max-h-[60vh] overflow-y-auto space-y-6">
                 
                 <!-- Flower Shop Project Card -->
                 <div class="bg-slate-800/40 rounded-xl border border-slate-700 p-6 hover:border-blue-500/50 transition-colors">
@@ -218,7 +242,7 @@
                 </div>
                 <div class="mx-auto text-xs text-slate-400 font-medium tracking-wide">Contact & Resume</div>
             </div>
-            <div class="window-content p-6 sm:p-8 max-h-[60vh] overflow-y-auto space-y-4">
+            <div class="window-content p-5 sm:p-8 max-h-[60vh] overflow-y-auto space-y-4">
                 
                 <!-- Resume Card -->
                 <a href="/Document/Dang-NguyenResume.pdf" target="_blank" class="bg-slate-800/40 rounded-xl border border-slate-700 p-6 hover:border-blue-500/50 hover:bg-slate-800/60 transition-all duration-300 group shadow-lg flex items-center space-x-4 cursor-pointer block">
@@ -328,7 +352,9 @@
                 let isDragging = false;
                 let startX, startY, initialLeft, initialTop;
 
-                bar.addEventListener('mousedown', (e) => {
+                const dragStart = (e) => {
+                    // Disable dragging on small mobile screens
+                    if (window.innerWidth <= 640) return;
                     // Ignore clicks on buttons
                     if(e.target.tagName.toLowerCase() === 'button') return;
 
@@ -344,30 +370,46 @@
                         win.style.top = rect.top + 'px';
                     }
 
-                    startX = e.clientX;
-                    startY = e.clientY;
+                    // Touch vs Mouse support
+                    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+                    startX = clientX;
+                    startY = clientY;
                     initialLeft = parseInt(window.getComputedStyle(win).left, 10);
                     initialTop = parseInt(window.getComputedStyle(win).top, 10);
 
-                    document.addEventListener('mousemove', onMouseMove);
-                    document.addEventListener('mouseup', onMouseUp);
-                });
+                    document.addEventListener('mousemove', dragMove);
+                    document.addEventListener('mouseup', dragEnd);
+                    document.addEventListener('touchmove', dragMove, { passive: false });
+                    document.addEventListener('touchend', dragEnd);
+                };
 
-                function onMouseMove(e) {
+                const dragMove = (e) => {
                     if (!isDragging) return;
-                    const win = bar.closest('.os-window');
-                    const dx = e.clientX - startX;
-                    const dy = e.clientY - startY;
+                    if (e.type.includes('touch')) e.preventDefault(); // Prevent scrolling while dragging
+
+                    const clientX = e.type.includes('touch') ? e.touches[0].clientX : e.clientX;
+                    const clientY = e.type.includes('touch') ? e.touches[0].clientY : e.clientY;
+
+                    const dx = clientX - startX;
+                    const dy = clientY - startY;
                     
+                    const win = bar.closest('.os-window');
                     win.style.left = `${initialLeft + dx}px`;
                     win.style.top = `${initialTop + dy}px`;
-                }
+                };
 
-                function onMouseUp() {
+                const dragEnd = () => {
                     isDragging = false;
-                    document.removeEventListener('mousemove', onMouseMove);
-                    document.removeEventListener('mouseup', onMouseUp);
-                }
+                    document.removeEventListener('mousemove', dragMove);
+                    document.removeEventListener('mouseup', dragEnd);
+                    document.removeEventListener('touchmove', dragMove);
+                    document.removeEventListener('touchend', dragEnd);
+                };
+
+                bar.addEventListener('mousedown', dragStart);
+                bar.addEventListener('touchstart', dragStart, { passive: false });
             });
 
             // Initialize by opening the About Me window
