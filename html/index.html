@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio | Blank Canvas</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f172a; /* Slate 900 */
+            color: #f8fafc; /* Slate 50 */
+            overflow: hidden; /* Prevent page scrolling, act like a desktop */
+        }
+        
+        /* Glowing effect for the active navigation tab */
+        .active-nav {
+            color: #60a5fa !important;
+            text-shadow: 0 0 15px rgba(96, 165, 250, 0.9);
+        }
+
+        /* OS Window Base Styles */
+        .os-window {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(51, 65, 85, 0.5);
+            transition: opacity 0.2s ease-in-out, transform 0.2s ease-in-out;
+            will-change: transform, left, top;
+        }
+
+        .os-window.hidden-window {
+            opacity: 0;
+            pointer-events: none;
+            transform: scale(0.95);
+        }
+
+        .title-bar {
+            cursor: grab;
+        }
+        .title-bar:active {
+            cursor: grabbing;
+        }
+        
+        /* Custom Scrollbar for Window Content */
+        .window-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .window-content::-webkit-scrollbar-track {
+            background: rgba(15, 23, 42, 0.5); 
+        }
+        .window-content::-webkit-scrollbar-thumb {
+            background: rgba(71, 85, 105, 0.8); 
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="min-h-screen w-full relative">
+
+    <!-- Decorative background glow -->
+    <div class="fixed top-0 left-1/2 -translate-x-1/2 w-3/4 h-64 bg-blue-600/10 blur-[100px] rounded-full pointer-events-none"></div>
+
+    <!-- Top Navigation Bar (Acts like a Dock/Taskbar) -->
+    <header class="fixed top-8 z-[100] w-full flex justify-center px-4 pointer-events-none">
+        <nav class="pointer-events-auto bg-slate-800/80 backdrop-blur-md px-8 py-4 rounded-full shadow-lg shadow-black/20 border border-slate-700 w-full max-w-2xl flex justify-center space-x-6 sm:space-x-12">
+            <a href="#" data-window="window-about" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors active-nav">About Me</a>
+            <a href="#" data-window="window-projects" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors">Projects</a>
+            <a href="#" data-window="window-contact" class="nav-link text-sm font-medium text-slate-300 hover:text-blue-400 transition-colors">Contact</a>
+        </nav>
+    </header>
+
+    <!-- Desktop Area (Contains all windows) -->
+    <main id="desktop" class="absolute inset-0 w-full h-full overflow-hidden pt-32">
+        
+        <!-- About Me Window -->
+        <div id="window-about" class="os-window hidden-window w-[90%] max-w-4xl bg-slate-900/90 backdrop-blur-xl border border-slate-700 rounded-xl overflow-hidden z-40" style="top: 120px; left: 50%; transform: translateX(-50%);">
+            <!-- macOS Style Title Bar -->
+            <div class="title-bar bg-slate-800/80 px-4 py-3 flex items-center border-b border-slate-700 select-none">
+                <div class="flex space-x-2 absolute">
+                    <button class="close-btn w-3 h-3 rounded-full bg-red-500 hover:bg-red-400 transition-colors"></button>
+                    <button class="min-btn w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400 transition-colors"></button>
+                    <button class="max-btn w-3 h-3 rounded-full bg-green-500 hover:bg-green-400 transition-colors"></button>
+                </div>
+                <div class="mx-auto text-xs text-slate-400 font-medium tracking-wide">About Me — guest@portfolio</div>
+            </div>
+            
+            <!-- Window Content -->
+            <div class="window-content p-8 max-h-[65vh] overflow-y-auto">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+                    <!-- Left: Text Content -->
+                    <div class="space-y-6 text-left">
+                        <div class="inline-block px-3 py-1 rounded-full bg-blue-900/30 border border-blue-500/30 text-blue-400 text-xs font-semibold tracking-wide uppercase">
+                            Cybersecurity & Computer Science
+                        </div>
+                        <h1 class="text-3xl sm:text-4xl font-semibold text-slate-100 tracking-tight leading-tight">
+                            Hi, you are looking at <span class="text-blue-400">Dang Nguyen's</span> website.
+                        </h1>
+                        <p class="text-base text-slate-400 leading-relaxed">
+                            I am a Computer Science professional aspiring to specialize in network-level defenses and threat analysis. My passion for technology drove me to pursue this field. I am driven by a deep curiosity to understand how things work behind the scenes, whether it's an application, a website, a server, or the underlying network infrastructure.
+                        </p>
+                        
+                        <!-- Skill Tags -->
+                        <div class="flex flex-wrap gap-2">
+                            <span class="px-3 py-1 text-xs bg-slate-800 border border-slate-700 text-slate-300 rounded-md">Python</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 border border-slate-700 text-slate-300 rounded-md">MySQL</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 border border-slate-700 text-slate-300 rounded-md">Docker</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 border border-slate-700 text-slate-300 rounded-md">Network Analysis</span>
+                            <span class="px-3 py-1 text-xs bg-slate-800 border border-slate-700 text-slate-300 rounded-md">Linux</span>
+                        </div>
+
+                        <p class="text-base text-slate-400 leading-relaxed">
+                            Beyond technology, I have a deep appreciation for art and design. I love video games not just for entertainment, but to admire the incredible creativity and artistry of the developers. This same appreciation for visual storytelling draws me to movies and inspires me to capture the world around me through photography.
+                        </p>
+                    </div>
+
+                    <!-- Right: Profile Picture -->
+                    <div class="w-full relative group flex justify-center md:justify-end">
+                        <div class="absolute inset-0 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-2xl blur-lg opacity-25 group-hover:opacity-40 transition duration-1000 group-hover:duration-200 w-3/4 h-3/4 m-auto md:mr-0 md:ml-auto"></div>
+                        <img src="../Document/IMG_2963.png" alt="Profile Picture" class="relative rounded-2xl shadow-2xl border border-slate-700 object-cover max-w-[280px] w-full aspect-square z-10">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Placeholder Projects Window -->
+        <div id="window-projects" class="os-window hidden-window w-[90%] max-w-3xl bg-slate-900/90 backdrop-blur-xl border border-slate-700 rounded-xl overflow-hidden z-30" style="top: 160px; left: 55%; transform: translateX(-50%);">
+            <div class="title-bar bg-slate-800/80 px-4 py-3 flex items-center border-b border-slate-700 select-none">
+                <div class="flex space-x-2 absolute">
+                    <button class="close-btn w-3 h-3 rounded-full bg-red-500 hover:bg-red-400"></button>
+                    <button class="min-btn w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400"></button>
+                    <button class="max-btn w-3 h-3 rounded-full bg-green-500 hover:bg-green-400"></button>
+                </div>
+                <div class="mx-auto text-xs text-slate-400 font-medium tracking-wide">Projects — /home/guest/projects</div>
+            </div>
+            <div class="window-content p-6 sm:p-8 max-h-[60vh] overflow-y-auto space-y-6">
+                
+                <!-- Flower Shop Project Card -->
+                <div class="bg-slate-800/40 rounded-xl border border-slate-700 p-6 hover:border-blue-500/50 transition-colors">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-blue-900/30 flex items-center justify-center text-blue-400 border border-blue-500/30 shrink-0">
+                            <!-- Database/Security Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <a href="flower_homepage.html" class="group/link inline-flex items-center gap-2 hover:underline decoration-blue-400 underline-offset-4">
+                                <h3 class="text-xl font-semibold text-slate-200 group-hover/link:text-blue-400 transition-colors">Flower Shop DBMS & App</h3>
+                                <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-500 group-hover/link:text-blue-400 transition-colors">
+                                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path><polyline points="15 3 21 3 21 9"></polyline><line x1="10" y1="14" x2="21" y2="3"></line>
+                                </svg>
+                            </a>
+                            <p class="text-sm text-blue-400">Team Project (5 Members)</p>
+                        </div>
+                    </div>
+                    
+                    <ul class="text-slate-400 text-sm leading-relaxed mb-4 list-disc list-outside ml-4 space-y-2 marker:text-blue-500">
+                        <li>Collaborated in a team of 5 to develop a comprehensive retail flower shop platform.</li>
+                        <li>Implemented user authentication endpoints, enabling secure customer registration and login functionality.</li>
+                    </ul>
+                    
+                    <p class="text-slate-500 text-xs italic mb-5">
+                        (Note: The live database interactions cannot be demonstrated here, as this portfolio is hosted as a static site via GitHub Pages.)
+                    </p>
+
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">Python</span>
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">MySQL</span>
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">Auth & Security</span>
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">API Endpoints</span>
+                    </div>
+                </div>
+
+                <!-- Cyber Lab Project Card -->
+                <div class="bg-slate-800/40 rounded-xl border border-slate-700 p-6 hover:border-blue-500/50 transition-colors">
+                    <div class="flex items-center space-x-4 mb-4">
+                        <div class="w-12 h-12 rounded-lg bg-blue-900/30 flex items-center justify-center text-blue-400 border border-blue-500/30 shrink-0">
+                            <!-- Server/Network Icon -->
+                            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <rect width="20" height="8" x="2" y="2" rx="2"></rect>
+                                <rect width="20" height="8" x="2" y="14" rx="2"></rect>
+                                <line x1="6" x2="6.01" y1="6" y2="6"></line>
+                                <line x1="6" x2="6.01" y1="18" y2="18"></line>
+                            </svg>
+                        </div>
+                        <div>
+                            <h3 class="text-xl font-semibold text-slate-200">Home Cyber Lab & DNS Sinkhole</h3>
+                            <p class="text-sm text-blue-400">Personal Project</p>
+                        </div>
+                    </div>
+                    
+                    <ul class="text-slate-400 text-sm leading-relaxed mb-5 list-disc list-outside ml-4 space-y-2 marker:text-blue-500">
+                        <li>Deployed a comprehensive home network security lab utilizing Docker containers.</li>
+                        <li>Implemented a Pi-hole DNS sinkhole to intercept, analyze, and block malicious network requests.</li>
+                        <li>Established continuous network traffic monitoring to enhance local infrastructure security.</li>
+                    </ul>
+
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">Docker</span>
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">Pi-hole</span>
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">Networking</span>
+                        <span class="px-2 py-1 text-xs bg-slate-900 border border-slate-700 text-slate-300 rounded">Linux</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- Contact Window -->
+        <div id="window-contact" class="os-window hidden-window w-[90%] max-w-lg bg-slate-900/90 backdrop-blur-xl border border-slate-700 rounded-xl overflow-hidden z-10" style="top: 240px; left: 60%; transform: translateX(-50%);">
+            <div class="title-bar bg-slate-800/80 px-4 py-3 flex items-center border-b border-slate-700 select-none">
+                <div class="flex space-x-2 absolute">
+                    <button class="close-btn w-3 h-3 rounded-full bg-red-500 hover:bg-red-400"></button>
+                    <button class="min-btn w-3 h-3 rounded-full bg-yellow-500 hover:bg-yellow-400"></button>
+                    <button class="max-btn w-3 h-3 rounded-full bg-green-500 hover:bg-green-400"></button>
+                </div>
+                <div class="mx-auto text-xs text-slate-400 font-medium tracking-wide">Contact & Resume</div>
+            </div>
+            <div class="window-content p-6 sm:p-8 max-h-[60vh] overflow-y-auto space-y-4">
+                
+                <!-- Resume Card -->
+                <a href="../Document/Dang-NguyenResume.pdf" target="_blank" class="bg-slate-800/40 rounded-xl border border-slate-700 p-6 hover:border-blue-500/50 hover:bg-slate-800/60 transition-all duration-300 group shadow-lg flex items-center space-x-4 cursor-pointer block">
+                    <div class="w-12 h-12 rounded-lg bg-blue-900/30 flex items-center justify-center text-blue-400 border border-blue-500/30 shrink-0 group-hover:scale-110 transition-transform">
+                        <!-- Document Icon -->
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                            <polyline points="14 2 14 8 20 8"></polyline>
+                            <line x1="16" y1="13" x2="8" y2="13"></line>
+                            <line x1="16" y1="17" x2="8" y2="17"></line>
+                            <polyline points="10 9 9 9 8 9"></polyline>
+                        </svg>
+                    </div>
+                    <div>
+                        <h3 class="text-xl font-semibold text-slate-200 group-hover:text-blue-400 transition-colors">Resume</h3>
+                        <p class="text-sm text-slate-400">View or download my full resume (PDF)</p>
+                    </div>
+                </a>
+
+                <!-- Email, LinkedIn, and GitHub -->
+                <div class="grid grid-cols-3 gap-3 pt-2">
+                    <a href="mailto:nathannguyen211@gmail.com" class="bg-slate-800/40 rounded-xl border border-slate-700 p-3 sm:p-4 hover:border-blue-500/50 transition-colors flex flex-col items-center justify-center text-center group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 group-hover:text-blue-400 mb-2 transition-colors">
+                            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                            <polyline points="22,6 12,13 2,6"></polyline>
+                        </svg>
+                        <span class="text-xs sm:text-sm font-medium text-slate-300 group-hover:text-blue-400 transition-colors">Email</span>
+                    </a>
+                    <a href="https://linkedin.com/in/dangminhnguyen2110" target="_blank" class="bg-slate-800/40 rounded-xl border border-slate-700 p-3 sm:p-4 hover:border-blue-500/50 transition-colors flex flex-col items-center justify-center text-center group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 group-hover:text-blue-400 mb-2 transition-colors">
+                            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
+                            <rect x="2" y="9" width="4" height="12"></rect>
+                            <circle cx="4" cy="4" r="2"></circle>
+                        </svg>
+                        <span class="text-xs sm:text-sm font-medium text-slate-300 group-hover:text-blue-400 transition-colors">LinkedIn</span>
+                    </a>
+                    <a href="https://github.com/NathanNguyen21" target="_blank" class="bg-slate-800/40 rounded-xl border border-slate-700 p-3 sm:p-4 hover:border-blue-500/50 transition-colors flex flex-col items-center justify-center text-center group">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-slate-400 group-hover:text-blue-400 mb-2 transition-colors">
+                            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                        </svg>
+                        <span class="text-xs sm:text-sm font-medium text-slate-300 group-hover:text-blue-400 transition-colors">GitHub</span>
+                    </a>
+                </div>
+
+            </div>
+        </div>
+
+    </main>
+
+    <!-- OS Window Manager Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            let highestZ = 100;
+            const navLinks = document.querySelectorAll('.nav-link');
+            
+            // Open window function
+            function openWindow(id, linkElement) {
+                const win = document.getElementById(id);
+                if (win) {
+                    win.classList.remove('hidden-window');
+                    win.style.zIndex = ++highestZ;
+                    
+                    // Update navigation highlighting
+                    if (linkElement) {
+                        navLinks.forEach(l => l.classList.remove('active-nav'));
+                        linkElement.classList.add('active-nav');
+                    }
+                }
+            }
+
+            // Bind Navigation Links
+            navLinks.forEach(link => {
+                link.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const targetId = link.getAttribute('data-window');
+                    openWindow(targetId, link);
+                });
+            });
+
+            // Bind Window Close Buttons (Red Circle)
+            document.querySelectorAll('.close-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.stopPropagation(); // Prevent drag initialization
+                    const win = e.target.closest('.os-window');
+                    win.classList.add('hidden-window');
+                });
+            });
+
+            // Make windows active (bring to front) on click anywhere inside them
+            document.querySelectorAll('.os-window').forEach(win => {
+                win.addEventListener('mousedown', () => {
+                    win.style.zIndex = ++highestZ;
+                    
+                    // Update navigation highlighting to match the focused window
+                    const winId = win.id;
+                    navLinks.forEach(link => {
+                        link.classList.remove('active-nav');
+                        if (link.getAttribute('data-window') === winId) {
+                            link.classList.add('active-nav');
+                        }
+                    });
+                });
+            });
+
+            // Dragging Logic
+            document.querySelectorAll('.title-bar').forEach(bar => {
+                let isDragging = false;
+                let startX, startY, initialLeft, initialTop;
+
+                bar.addEventListener('mousedown', (e) => {
+                    // Ignore clicks on buttons
+                    if(e.target.tagName.toLowerCase() === 'button') return;
+
+                    isDragging = true;
+                    const win = bar.closest('.os-window');
+                    win.style.zIndex = ++highestZ;
+                    
+                    // Standardize position (remove CSS transform centering so it drags smoothly)
+                    if (win.style.transform.includes('translateX')) {
+                        const rect = win.getBoundingClientRect();
+                        win.style.transform = 'none';
+                        win.style.left = rect.left + 'px';
+                        win.style.top = rect.top + 'px';
+                    }
+
+                    startX = e.clientX;
+                    startY = e.clientY;
+                    initialLeft = parseInt(window.getComputedStyle(win).left, 10);
+                    initialTop = parseInt(window.getComputedStyle(win).top, 10);
+
+                    document.addEventListener('mousemove', onMouseMove);
+                    document.addEventListener('mouseup', onMouseUp);
+                });
+
+                function onMouseMove(e) {
+                    if (!isDragging) return;
+                    const win = bar.closest('.os-window');
+                    const dx = e.clientX - startX;
+                    const dy = e.clientY - startY;
+                    
+                    win.style.left = `${initialLeft + dx}px`;
+                    win.style.top = `${initialTop + dy}px`;
+                }
+
+                function onMouseUp() {
+                    isDragging = false;
+                    document.removeEventListener('mousemove', onMouseMove);
+                    document.removeEventListener('mouseup', onMouseUp);
+                }
+            });
+
+            // Initialize by opening the About Me window
+            const defaultLink = document.querySelector('[data-window="window-about"]');
+            openWindow('window-about', defaultLink);
+        });
+    </script>
+</body>
+</html>
